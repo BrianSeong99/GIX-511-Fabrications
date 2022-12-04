@@ -158,10 +158,16 @@ void loop() {
   static int pitch_gesture = 0;
   static bool change_pattern = false;
 
-  if(WAVE_DETECTION_MODE){
-    if (mode != HEART) mode = HEART;
-    // Serial.print("WAVE_DETECTION_MODE\n");
-    // delay(DELAY); 
+  if (leftswitch) {
+    if (change_pattern) {
+      mode = (mode + 1) % TOTAL_MODE_SIZE;
+      change_pattern = false;
+    }
+  } else {
+    change_pattern = true;
+  }
+
+  if (mode == HEART) {
     int readouts[nValCnt];
     ReadAccGyr(readouts); //读出测量值
     float realVals[7];
@@ -198,12 +204,10 @@ void loop() {
     if(pitch_gesture==1){
       Serial.print("PITCH GESTURE: 1");
       PosPrinter(1);
-      mode = HEART;
     }
     else if(pitch_gesture==2){
       Serial.print("PITCH GESTURE: 2");
       PosPrinter(2);
-      mode = HEART;
     }
     Serial.print("Roll:");
     Serial.print(fNewRoll); Serial.print('(');
@@ -215,25 +219,6 @@ void loop() {
     pitch_queue[cur_ptr] = fPitchRate;
     row_queue[cur_ptr] = fRollRate;
     cur_ptr = (cur_ptr+1)%QUEUE_LEN;
-  } else if (DISPLAY_MODE){
-    // Serial.print("DISPLAY_MODE\n");
-    // delay(DELAY); 
-    if (change_pattern) {
-      mode = (mode + 1) % TOTAL_MODE_SIZE;
-      change_pattern = false;
-    }
-  } else if (!rightswitch) {
-    // Serial.print("Right Switch Turned off\n");
-    // delay(DELAY); 
-    change_pattern = true;
-  } else if (BLACKSCREEN_MODE){
-    // Serial.print("BLACKSCREEN_MODE\n");
-    // delay(DELAY); 
-    mode = BLACKSCREEN;
-  } else {
-    // Serial.print("Default mode\n");
-    // delay(DELAY); 
-    mode = 3;
   }
 
   PaletteFillIn(motionIndex, pitch_gesture);      
