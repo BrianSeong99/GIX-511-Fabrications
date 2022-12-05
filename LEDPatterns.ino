@@ -94,7 +94,7 @@ extern const uint8_t HorizontalHeartPattern[2][6*12] = {
   {
     0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 
     0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
@@ -403,9 +403,9 @@ void PaletteFillIn(uint8_t motionIndex, int pitch_gesture)
     for (uint8_t i = 0; i < 6; i ++) {
       for (uint8_t j = 0; j < 12; j ++) {
         if (i % 2 == 0) {
-          leds[GetLEDIndex(i, j)] = ArrowPalette[ArrowPattern[GetLEDIndex(i, (j+currentOffset) % 12)]];
+          leds[GetLEDIndex(i, j)] = ArrowPalette[ArrowPattern[GetLEDIndex(i, (12 - j+currentOffset) % 12)]];
         } else {
-          leds[GetLEDIndex(i, 11-j)] = ArrowPalette[ArrowPattern[GetLEDIndex(i, (j+currentOffset) % 12)]];
+          leds[GetLEDIndex(i, 11-j)] = ArrowPalette[ArrowPattern[GetLEDIndex(i, (12 - j+currentOffset) % 12)]];
         }
       }
     }        
